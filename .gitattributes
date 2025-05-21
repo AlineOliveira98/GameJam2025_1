@@ -1,0 +1,7 @@
+.gitattributes* text=auto
+*.cs text eol=crlf
+*.txt text eol=crlf
+*.meta text eol=lf
+*.sh text eol=lf
+*.json text eol=crlf
+.vsconfig text eol=crlf
