@@ -40,14 +40,14 @@ public class Player : MonoBehaviourPun, IPunObservable
         if (movement > 0)
         {
             //TODO - flip
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = false;
             //transform.eulerAngles = new Vector3(0, 0, 0);
             this.photonView.RPC("ChangeRight", RpcTarget.Others);
         }
         if (movement < 0)
         {
             //TODO - flip
-            spriteRenderer.flipY = true;
+            spriteRenderer.flipX = true;
             //transform.eulerAngles = new Vector3(0, 180, 0);
             this.photonView.RPC("ChangeLeft", RpcTarget.Others);
         }
@@ -63,14 +63,14 @@ public class Player : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void ChangeLeft()
     {
-        spriteRenderer.flipX = true;
+        spriteRenderer.flipX = false;
         //transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
     [PunRPC]
     private void ChangeRight()
     {
-        spriteRenderer.flipY = true;
+        spriteRenderer.flipX = true;
         //transform.eulerAngles = new Vector3(0, 180, 0);
     }
 
