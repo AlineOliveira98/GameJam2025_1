@@ -42,14 +42,14 @@ public class Player : MonoBehaviourPun, IPunObservable
             //TODO - flip
             spriteRenderer.flipX = false;
             //transform.eulerAngles = new Vector3(0, 0, 0);
-            this.photonView.RPC("ChangeRight", RpcTarget.Others);
+            this.photonView.RPC("ChangeLeft", RpcTarget.Others);
         }
         if (movement < 0)
         {
             //TODO - flip
             spriteRenderer.flipX = true;
             //transform.eulerAngles = new Vector3(0, 180, 0);
-            this.photonView.RPC("ChangeLeft", RpcTarget.Others);
+            this.photonView.RPC("ChangeRight", RpcTarget.Others);
         }
         if (movement == 0)
         {
