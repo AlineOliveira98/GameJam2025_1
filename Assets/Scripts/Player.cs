@@ -40,13 +40,13 @@ public class Player : MonoBehaviourPun, IPunObservable
 
         if (movement > 0 && lastDirection != 1)
         {
-            transform.eulerAngles = new Vector3(0, 0, 0);
+            transform.rotation = Quaternion.Euler(0, 0f, 0);
             this.photonView.RPC("ChangeRight", RpcTarget.Others);
             lastDirection = 1;
         }
         else if (movement < 0 && lastDirection != -1)
         {
-            transform.eulerAngles = new Vector3(0, 180, 0);
+            transform.rotation = Quaternion.Euler(0, 180f, 0);
             this.photonView.RPC("ChangeLeft", RpcTarget.Others);
             lastDirection = -1;
         }
@@ -54,6 +54,8 @@ public class Player : MonoBehaviourPun, IPunObservable
         {
             lastDirection = 0;
         }
+
+        
 
     }
 
@@ -64,14 +66,14 @@ public class Player : MonoBehaviourPun, IPunObservable
     private void ChangeLeft()
     {
         //spriteRenderer.flipX = true;
-        transform.eulerAngles = new Vector3(0, 0, 0);
+        transform.rotation = Quaternion.Euler(0, 0f, 0);
     }
 
     [PunRPC]
     private void ChangeRight()
     {
         //spriteRenderer.flipY = true;
-        transform.eulerAngles = new Vector3(0, 180, 0);
+        transform.rotation = Quaternion.Euler(0, -180f, 0);
     }
 
     #endregion
