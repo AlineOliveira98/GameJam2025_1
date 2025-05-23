@@ -27,7 +27,9 @@ public class Lobby : MonoBehaviourPunCallbacks
     //Metodo ao entrar a sala
     public override void OnJoinedRoom()
     {
-        SceneManager.LoadScene(2);
+        //Nao usar ScenManager - Bug de nao ver o player
+        //SceneManager.LoadScene(2);
+        PhotonNetwork.LoadLevel(2);
     }
 
     //Metodo ao dar erro ao entrar na sala
