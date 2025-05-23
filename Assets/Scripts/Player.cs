@@ -5,6 +5,7 @@ public class Player : MonoBehaviourPun, IPunObservable
 {
     private Rigidbody2D rig;
     public float speed;
+    private int lastDirection = 0;
     public SpriteRenderer spriteRenderer;
 
     private Vector2 clientPos;
@@ -37,24 +38,23 @@ public class Player : MonoBehaviourPun, IPunObservable
 
         rig.linearVelocity = new Vector2(movement * speed, rig.linearVelocity.y);
 
-        if (movement > 0)
+        if (movement > 0 && lastDirection != 1)
         {
-            //TODO - flip
-            //spriteRenderer.flipX = true;
             transform.eulerAngles = new Vector3(0, 0, 0);
             this.photonView.RPC("ChangeRight", RpcTarget.Others);
+            lastDirection = 1;
         }
-        if (movement < 0)
+        else if (movement < 0 && lastDirection != -1)
         {
-            //TODO - flip
-            //spriteRenderer.flipY = true;
             transform.eulerAngles = new Vector3(0, 180, 0);
             this.photonView.RPC("ChangeLeft", RpcTarget.Others);
+            lastDirection = -1;
         }
-        if (movement == 0)
+        else if (movement == 0)
         {
-
+            lastDirection = 0;
         }
+
     }
 
     #endregion
