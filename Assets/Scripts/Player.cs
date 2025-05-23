@@ -82,7 +82,9 @@ public class Player : MonoBehaviourPun, IPunObservable
     private void smoothMovement()
     {
         //transform.position = Vector3.Lerp(transform.position, clientPos, Time.fixedDeltaTime);
-        rig.position = Vector2.MoveTowards(rig.position, clientPos, Time.fixedDeltaTime);
+        float lerpSpeed = 10f; // Ajustável
+        rig.position = Vector2.Lerp(rig.position, clientPos, lerpSpeed * Time.fixedDeltaTime);
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -101,6 +103,7 @@ public class Player : MonoBehaviourPun, IPunObservable
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             clientPos += rig.linearVelocity * lag;
         }
+
 
 
         //if (stream.IsWriting)
