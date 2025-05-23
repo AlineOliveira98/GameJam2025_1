@@ -10,7 +10,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     public TMP_InputField joinRoom;
 
     //Metodo ao clicar no Button criar sala 
-    //Todo - configurar numero maximo de players
+    //TODO - configurar numero maximo de players
     public void CreateRoomButton()
     {
         PhotonNetwork.CreateRoom(createRoom.text, new RoomOptions {MaxPlayers = 4}, null);
