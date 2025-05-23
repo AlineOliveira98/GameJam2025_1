@@ -40,15 +40,15 @@ public class Player : MonoBehaviourPun, IPunObservable
         if (movement > 0)
         {
             //TODO - flip
-            spriteRenderer.flipX = true;
-            //transform.eulerAngles = new Vector3(0, 0, 0);
+            //spriteRenderer.flipX = true;
+            transform.eulerAngles = new Vector3(0, 0, 0);
             this.photonView.RPC("ChangeRight", RpcTarget.Others);
         }
         if (movement < 0)
         {
             //TODO - flip
-            spriteRenderer.flipY = true;
-            //transform.eulerAngles = new Vector3(0, 180, 0);
+            //spriteRenderer.flipY = true;
+            transform.eulerAngles = new Vector3(0, 180, 0);
             this.photonView.RPC("ChangeLeft", RpcTarget.Others);
         }
         if (movement == 0)
@@ -63,15 +63,15 @@ public class Player : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void ChangeLeft()
     {
-        spriteRenderer.flipX = true;
-        //transform.eulerAngles = new Vector3(0, 0, 0);
+        //spriteRenderer.flipX = true;
+        transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
     [PunRPC]
     private void ChangeRight()
     {
-        spriteRenderer.flipY = true;
-        //transform.eulerAngles = new Vector3(0, 180, 0);
+        //spriteRenderer.flipY = true;
+        transform.eulerAngles = new Vector3(0, 180, 0);
     }
 
     #endregion
@@ -79,19 +79,36 @@ public class Player : MonoBehaviourPun, IPunObservable
     #region othersClients
     private void smoothMovement()
     {
-        transform.position = Vector3.Lerp(transform.position, clientPos, Time.fixedDeltaTime);
+        //transform.position = Vector3.Lerp(transform.position, clientPos, Time.fixedDeltaTime);
+        rig.position = Vector2.MoveTowards(rig.position, clientPos, Time.fixedDeltaTime);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if(stream.IsWriting)
+
+        if (stream.IsWriting)
         {
-            stream.SendNext(transform.position);
+            stream.SendNext(rig.position);
+            stream.SendNext(rig.linearVelocity);
         }
-        else if(stream.IsReading)
+        else
         {
             clientPos = (Vector2)stream.ReceiveNext();
+            rig.linearVelocity = (Vector2)stream.ReceiveNext();
+
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
+            clientPos += rig.linearVelocity * lag;
         }
+
+
+        //if (stream.IsWriting)
+        //{
+        //    stream.SendNext(transform.position);
+        //}
+        //else if (stream.IsReading)
+        //{
+        //    clientPos = (Vector2)stream.ReceiveNext();
+        //}
     }
     #endregion
 }
