@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        float randomPos = Random.Range(/*passar o valor do spawn*/);
-        PhotonNetwork.Instantiate(Player.name, new Vector2(Player.transform.position.x * 1, Player.transform.position.y), Quaternion.identity);
+        float randomPos = Random.Range(-3f, 2f);
+        PhotonNetwork.Instantiate(Player.name, new Vector2(Player.transform.position.x + randomPos, Player.transform.position.y), Quaternion.identity);
     }
 }
