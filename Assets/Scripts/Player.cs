@@ -16,7 +16,7 @@ public class Player : MonoBehaviourPun, IPunObservable
     void Awake()
     {
         movement = GetComponent<MovementBehaviour>();
-        rb = movement.GetRigidbody();
+        rb = movement.GetRigidbody(); // Referï¿½ncia correta
 
         if (!photonView.IsMine)
         {
@@ -58,20 +58,16 @@ public class Player : MonoBehaviourPun, IPunObservable
     }
 
 
-    [SerializeField] private float smoothSpeed = 10f;
-
     private void SmoothMovement()
     {
-        // Move suavemente o objeto até a posição recebida
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * smoothSpeed);
+        transform.position = Vector2.MoveTowards(transform.position, clientPos, Time.deltaTime * 10f);
     }
-
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            // Enviando posição e velocidade para os outros
+            // Enviando posiï¿½ï¿½o e velocidade para os outros
             stream.SendNext(transform.position);
             stream.SendNext(rb.linearVelocity);
         }
