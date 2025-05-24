@@ -26,8 +26,17 @@ public class MovementBehaviour : MonoBehaviourPun
 
     public void HandleJump()
     {
-        rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        if (IsGrounded())
+        {
+            rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
     }
+
+    private bool IsGrounded()
+    {
+        return Physics2D.Raycast(transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
+    }
+
 
     [PunRPC]
     private void ChangeSpriteDirection(bool flipX)
