@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4656608931501619429}
   - component: {fileID: 4931351026283447417}
-  - component: {fileID: 6497063398586029799}
   - component: {fileID: 2896390339773369626}
   - component: {fileID: 5783503045121113117}
   - component: {fileID: 8188691681464542990}
@@ -51,24 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3590212c1dafc504799f19f3b10d1cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelTransform: {fileID: 1528097133438527750}
---- !u!114 &6497063398586029799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3425565059977551964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34665695c03cc0743b7617f495e8ff28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speedMovement: 5
-  jumpForce: 8
-  rig: {fileID: 2896390339773369626}
-  sprite: {fileID: 5094343512722070922}
-  anim: {fileID: 4447961427857680050}
+  speed: 5
+  spriteRenderer: {fileID: 5094343512722070922}
 --- !u!50 &2896390339773369626
 Rigidbody2D:
   serializedVersion: 5
@@ -77,7 +60,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3425565059977551964}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
