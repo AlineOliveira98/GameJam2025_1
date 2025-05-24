@@ -1,90 +1,65 @@
 using UnityEngine;
 using Photon.Pun;
 
+[RequireComponent(typeof(MovementBehaviour))]
 public class Player : MonoBehaviourPun, IPunObservable
 {
-    private Rigidbody2D rig;
-    public float speed;
-    public SpriteRenderer spriteRenderer;
-
+    private MovementBehaviour movement;
     private Vector2 clientPos;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Vector2 velocityCache;
+
+    void Awake()
     {
-        rig = gameObject.GetComponent<Rigidbody2D>();
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        movement = GetComponent<MovementBehaviour>();
+
+        // Desativa o script de movimento dos jogadores remotos
+        if (!photonView.IsMine)
+        {
+            movement.enabled = false;
+        }
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (photonView.IsMine)
         {
-            //Minha movaimentacao
-            ProcessInput();
+            HandleInput();
         }
         else
         {
-            //sincroniza outros players
-            smoothMovement();
+            SmoothMovement();
         }
     }
 
-    #region myClient
-    private void ProcessInput()
+    private void HandleInput()
     {
-        float movement = Input.GetAxis("Horizontal");
+        float horizontalInput = Input.GetAxis("Horizontal");
+        bool jumpPressed = Input.GetKeyDown(KeyCode.Space);
 
-        rig.linearVelocity = new Vector2(movement * speed, rig.linearVelocity.y);
+        movement.HandleMovement(horizontalInput);
 
-        if (movement > 0)
+        if (jumpPressed)
         {
-            //TODO - flip
-            spriteRenderer.flipX = false;
-            //transform.eulerAngles = new Vector3(0, 0, 0);
-            this.photonView.RPC("ChangeLeft", RpcTarget.Others);
+            movement.HandleJump();
+            photonView.RPC("RemoteJump", RpcTarget.Others);
         }
-        if (movement < 0)
-        {
-            //TODO - flip
-            spriteRenderer.flipX = true;
-            //transform.eulerAngles = new Vector3(0, 180, 0);
-            this.photonView.RPC("ChangeRight", RpcTarget.Others);
-        }
-        if (movement == 0)
-        {
-
-        }
-    }
-
-    #endregion
-
-    #region RPCs Functions
-    [PunRPC]
-    private void ChangeLeft()
-    {
-        spriteRenderer.flipX = false;
-        //transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
     [PunRPC]
-    private void ChangeRight()
+    private void RemoteJump()
     {
-        spriteRenderer.flipX = true;
-        //transform.eulerAngles = new Vector3(0, 180, 0);
+        movement.HandleJump(); // Executa o pulo nos clientes remotos
     }
 
-    #endregion
 
-    #region othersClients
-    private void smoothMovement()
+    private void SmoothMovement()
     {
-        //transform.position = Vector3.Lerp(transform.position, clientPos, Time.fixedDeltaTime);
-        rig.position = Vector2.MoveTowards(rig.position, clientPos, Time.fixedDeltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, clientPos, Time.deltaTime * 10f);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        Rigidbody2D rig = movement.GetRigidbody();
 
         if (stream.IsWriting)
         {
@@ -94,22 +69,10 @@ public class Player : MonoBehaviourPun, IPunObservable
         else
         {
             clientPos = (Vector2)stream.ReceiveNext();
-            rig.linearVelocity = (Vector2)stream.ReceiveNext();
+            velocityCache = (Vector2)stream.ReceiveNext();
 
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            clientPos += rig.linearVelocity * lag;
+            clientPos += velocityCache * lag;
         }
-
-
-        //if (stream.IsWriting)
-        //{
-        //    stream.SendNext(transform.position);
-        //}
-        //else if (stream.IsReading)
-        //{
-        //    clientPos = (Vector2)stream.ReceiveNext();
-        //}
     }
-    #endregion
 }
-

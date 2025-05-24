@@ -1,43 +1,39 @@
-using DG.Tweening;
 using UnityEngine;
+using Photon.Pun;
 
-public class MovementBehaviour : MonoBehaviour
+public class MovementBehaviour : MonoBehaviourPun
 {
-    private const string RunAnim = "IsRunning";
-    private const string JumpAnim = "Jump";
-
-
     [Header("Settings")]
     [SerializeField] private float speedMovement;
     [SerializeField] private float jumpForce;
-
 
     [Header("References")]
     [SerializeField] private Rigidbody2D rig;
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Animator anim;
 
-    void Update()
-    {
-        Movement();
-        Jump();
-    }
+    private const string RunAnim = "IsRunning";
 
-    private void Movement()
+    public void HandleMovement(float horizontalInput)
     {
-        var horizontalInput = Input.GetAxis("Horizontal");
-
-        rig.linearVelocity = new Vector2(horizontalInput * speedMovement, rig.linearVelocityY);
+        rig.linearVelocity = new Vector2(horizontalInput * speedMovement, rig.linearVelocity.y);
 
         sprite.flipX = horizontalInput < 0;
         anim.SetBool(RunAnim, horizontalInput != 0);
+
+        photonView.RPC("ChangeSpriteDirection", RpcTarget.Others, horizontalInput < 0);
     }
 
-    private void Jump()
+    public void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rig.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-        }
+        rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
+
+    [PunRPC]
+    private void ChangeSpriteDirection(bool flipX)
+    {
+        sprite.flipX = flipX;
+    }
+
+    public Rigidbody2D GetRigidbody() => rig;
 }
