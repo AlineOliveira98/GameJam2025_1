@@ -29,7 +29,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         //Nao usar ScenManager - Bug de nao ver o player
         //SceneManager.LoadScene(2);
-        PhotonNetwork.LoadLevel(2);
+        PhotonNetwork.LoadLevel(1);
     }
 
     //Metodo ao dar erro ao entrar na sala

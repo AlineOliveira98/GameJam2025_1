@@ -9,8 +9,10 @@ public class Player : MonoBehaviourPun, IPunObservable
     private Vector2 clientPos;
     private Vector2 velocityCache;
     private Rigidbody2D rb;
+    [SerializeField] private Transform modelTransform;
     private Vector2 targetPosition;
     private Vector2 targetVelocity;
+
 
 
     void Awake()
@@ -65,8 +67,9 @@ public class Player : MonoBehaviourPun, IPunObservable
 
     private void SmoothMovement()
     {
-        rb.MovePosition(Vector2.Lerp(rb.position, targetPosition, Time.deltaTime * 10f));
+        modelTransform.position = Vector2.Lerp(modelTransform.position, targetPosition, Time.deltaTime * 10f);
     }
+
 
 
 
@@ -75,20 +78,18 @@ public class Player : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // Enviando posi��o e velocidade para os outros
-            stream.SendNext(transform.position);
+            stream.SendNext(modelTransform.position); // envia posição visual
             stream.SendNext(rb.linearVelocity);
         }
         else
         {
-            // Recebendo do dono
             targetPosition = (Vector2)stream.ReceiveNext();
             targetVelocity = (Vector2)stream.ReceiveNext();
 
-            // Lag compensation
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             targetPosition += targetVelocity * lag;
         }
     }
+
 
 }
