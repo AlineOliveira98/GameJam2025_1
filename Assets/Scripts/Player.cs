@@ -16,13 +16,16 @@ public class Player : MonoBehaviourPun, IPunObservable
     void Awake()
     {
         movement = GetComponent<MovementBehaviour>();
-        rb = movement.GetRigidbody(); // Refer�ncia correta
+        rb = movement.GetRigidbody();
 
         if (!photonView.IsMine)
         {
             movement.enabled = false;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+
         }
     }
+
 
 
     void Update()
@@ -60,8 +63,9 @@ public class Player : MonoBehaviourPun, IPunObservable
 
     private void SmoothMovement()
     {
-        transform.position = Vector2.MoveTowards(transform.position, clientPos, Time.deltaTime * 10f);
+        rb.position = Vector2.MoveTowards(rb.position, targetPosition, Time.deltaTime * 10f);
     }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
