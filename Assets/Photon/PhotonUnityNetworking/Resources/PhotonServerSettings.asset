@@ -41,6 +41,8 @@ MonoBehaviour:
   - RespawnSpaceship
   - ChangeLeft
   - ChangeRight
+  - ChangeSpriteDirection
+  - RemoteJump
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

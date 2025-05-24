@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6586813653569080611}
   - component: {fileID: 507314570615963028}
   - component: {fileID: 7090472202111170522}
+  - component: {fileID: 2093228832648993363}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -200,8 +201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3590212c1dafc504799f19f3b10d1cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  spriteRenderer: {fileID: 0}
 --- !u!114 &7090472202111170522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,3 +217,20 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &2093228832648993363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7638921775459793065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34665695c03cc0743b7617f495e8ff28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedMovement: 0
+  jumpForce: 0
+  rig: {fileID: 0}
+  sprite: {fileID: 0}
+  anim: {fileID: 0}
