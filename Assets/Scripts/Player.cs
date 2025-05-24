@@ -9,8 +9,10 @@ public class Player : MonoBehaviourPun, IPunObservable
     private Vector2 clientPos;
     private Vector2 velocityCache;
     private Rigidbody2D rb;
+    [SerializeField] private Transform modelTransform;
     private Vector2 targetPosition;
     private Vector2 targetVelocity;
+
 
 
     void Awake()
@@ -57,34 +59,37 @@ public class Player : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void RemoteJump()
     {
-        movement.HandleJump(); // Executa o pulo nos clientes remotos
+        // Executa apenas a animação, não o AddForce
+        movement.TriggerJumpAnimationOnly(); // Novo método
     }
+
 
 
     private void SmoothMovement()
     {
-        rb.position = Vector2.MoveTowards(rb.position, targetPosition, Time.deltaTime * 10f);
+        modelTransform.position = Vector2.Lerp(modelTransform.position, targetPosition, Time.deltaTime * 10f);
     }
+
+
+
 
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            // Enviando posi��o e velocidade para os outros
-            stream.SendNext(transform.position);
+            stream.SendNext(modelTransform.position); // envia posição visual
             stream.SendNext(rb.linearVelocity);
         }
         else
         {
-            // Recebendo do dono
             targetPosition = (Vector2)stream.ReceiveNext();
             targetVelocity = (Vector2)stream.ReceiveNext();
 
-            // Lag compensation
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             targetPosition += targetVelocity * lag;
         }
     }
+
 
 }

@@ -24,18 +24,21 @@ public class MovementBehaviour : MonoBehaviourPun
         photonView.RPC("ChangeSpriteDirection", RpcTarget.Others, horizontalInput < 0);
     }
 
+    public bool IsGrounded()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
+        return hit.collider != null;
+    }
+
     public void HandleJump()
     {
         if (IsGrounded())
         {
             rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            anim.SetTrigger("Jump");
         }
     }
 
-    private bool IsGrounded()
-    {
-        return Physics2D.Raycast(transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
-    }
 
 
     [PunRPC]
@@ -43,6 +46,12 @@ public class MovementBehaviour : MonoBehaviourPun
     {
         sprite.flipX = flipX;
     }
+
+    public void TriggerJumpAnimationOnly()
+    {
+        anim.SetTrigger("Jump"); // Só a animação
+    }
+
 
     public Rigidbody2D GetRigidbody() => rig;
 }
