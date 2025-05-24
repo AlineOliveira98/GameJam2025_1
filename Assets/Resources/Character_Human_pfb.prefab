@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3590212c1dafc504799f19f3b10d1cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelTransform: {fileID: 0}
+  modelTransform: {fileID: 1528097133438527750}
 --- !u!114 &6497063398586029799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +77,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3425565059977551964}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

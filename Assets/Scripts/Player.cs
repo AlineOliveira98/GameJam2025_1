@@ -1,95 +1,114 @@
 using UnityEngine;
 using Photon.Pun;
-using TMPro;
 
-[RequireComponent(typeof(MovementBehaviour))]
 public class Player : MonoBehaviourPun, IPunObservable
 {
-    private MovementBehaviour movement;
+    private Rigidbody2D rig;
+    public float speed;
+    public SpriteRenderer spriteRenderer;
+
     private Vector2 clientPos;
-    private Vector2 velocityCache;
-    private Rigidbody2D rb;
-    [SerializeField] private Transform modelTransform;
-    private Vector2 targetPosition;
-    private Vector2 targetVelocity;
-
-
-
-    void Awake()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
-        movement = GetComponent<MovementBehaviour>();
-        rb = movement.GetRigidbody();
-
-        if (!photonView.IsMine)
-        {
-            movement.enabled = false;
-            rb.bodyType = RigidbodyType2D.Kinematic;
-
-        }
+        rig = gameObject.GetComponent<Rigidbody2D>();
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
-
-
-    void Update()
+    // Update is called once per frame
+    void FixedUpdate()
     {
         if (photonView.IsMine)
         {
-            HandleInput();
+            //Minha movaimentacao
+            ProcessInput();
         }
         else
         {
-            SmoothMovement();
+            //sincroniza outros players
+            smoothMovement();
         }
     }
 
-    private void HandleInput()
+    #region myClient
+    private void ProcessInput()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        bool jumpPressed = Input.GetKeyDown(KeyCode.Space);
+        float movement = Input.GetAxis("Horizontal");
 
-        movement.HandleMovement(horizontalInput);
+        rig.linearVelocity = new Vector2(movement * speed, rig.linearVelocity.y);
 
-        if (jumpPressed)
+        if (movement > 0)
         {
-            movement.HandleJump();
-            photonView.RPC("RemoteJump", RpcTarget.Others);
+            //TODO - flip
+            spriteRenderer.flipX = false;
+            //transform.eulerAngles = new Vector3(0, 0, 0);
+            this.photonView.RPC("ChangeLeft", RpcTarget.Others);
         }
+        if (movement < 0)
+        {
+            //TODO - flip
+            spriteRenderer.flipX = true;
+            //transform.eulerAngles = new Vector3(0, 180, 0);
+            this.photonView.RPC("ChangeRight", RpcTarget.Others);
+        }
+        if (movement == 0)
+        {
+
+        }
+    }
+
+    #endregion
+
+    #region RPCs Functions
+    [PunRPC]
+    private void ChangeLeft()
+    {
+        spriteRenderer.flipX = false;
+        //transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
     [PunRPC]
-    private void RemoteJump()
+    private void ChangeRight()
     {
-        // Executa apenas a animação, não o AddForce
-        movement.TriggerJumpAnimationOnly(); // Novo método
+        spriteRenderer.flipX = true;
+        //transform.eulerAngles = new Vector3(0, 180, 0);
     }
 
+    #endregion
 
-
-    private void SmoothMovement()
+    #region othersClients
+    private void smoothMovement()
     {
-        modelTransform.position = Vector2.Lerp(modelTransform.position, targetPosition, Time.deltaTime * 10f);
+        //transform.position = Vector3.Lerp(transform.position, clientPos, Time.fixedDeltaTime);
+        rig.position = Vector2.MoveTowards(rig.position, clientPos, Time.fixedDeltaTime);
     }
-
-
-
-
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+
         if (stream.IsWriting)
         {
-            stream.SendNext(modelTransform.position); // envia posição visual
-            stream.SendNext(rb.linearVelocity);
+            stream.SendNext(rig.position);
+            stream.SendNext(rig.linearVelocity);
         }
         else
         {
-            targetPosition = (Vector2)stream.ReceiveNext();
-            targetVelocity = (Vector2)stream.ReceiveNext();
+            clientPos = (Vector2)stream.ReceiveNext();
+            rig.linearVelocity = (Vector2)stream.ReceiveNext();
 
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            targetPosition += targetVelocity * lag;
+            clientPos += rig.linearVelocity * lag;
         }
+
+
+        //if (stream.IsWriting)
+        //{
+        //    stream.SendNext(transform.position);
+        //}
+        //else if (stream.IsReading)
+        //{
+        //    clientPos = (Vector2)stream.ReceiveNext();
+        //}
     }
-
-
+    #endregion
 }

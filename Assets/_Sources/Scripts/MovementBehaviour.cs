@@ -1,57 +1,43 @@
+using DG.Tweening;
 using UnityEngine;
-using Photon.Pun;
 
-public class MovementBehaviour : MonoBehaviourPun
+public class MovementBehaviour : MonoBehaviour
 {
+    private const string RunAnim = "IsRunning";
+    private const string JumpAnim = "Jump";
+
+
     [Header("Settings")]
     [SerializeField] private float speedMovement;
     [SerializeField] private float jumpForce;
+
 
     [Header("References")]
     [SerializeField] private Rigidbody2D rig;
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Animator anim;
 
-    private const string RunAnim = "IsRunning";
-
-    public void HandleMovement(float horizontalInput)
+    void Update()
     {
-        rig.linearVelocity = new Vector2(horizontalInput * speedMovement, rig.linearVelocity.y);
+        Movement();
+        Jump();
+    }
+
+    private void Movement()
+    {
+        var horizontalInput = Input.GetAxis("Horizontal");
+
+        rig.linearVelocity = new Vector2(horizontalInput * speedMovement, rig.linearVelocityY);
 
         sprite.flipX = horizontalInput < 0;
         anim.SetBool(RunAnim, horizontalInput != 0);
-
-        photonView.RPC("ChangeSpriteDirection", RpcTarget.Others, horizontalInput < 0);
     }
 
-    public bool IsGrounded()
+    private void Jump()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
-        return hit.collider != null;
-    }
-
-    public void HandleJump()
-    {
-        if (IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            anim.SetTrigger("Jump");
+            rig.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
         }
     }
-
-
-
-    [PunRPC]
-    private void ChangeSpriteDirection(bool flipX)
-    {
-        sprite.flipX = flipX;
-    }
-
-    public void TriggerJumpAnimationOnly()
-    {
-        anim.SetTrigger("Jump"); // Só a animação
-    }
-
-
-    public Rigidbody2D GetRigidbody() => rig;
 }
