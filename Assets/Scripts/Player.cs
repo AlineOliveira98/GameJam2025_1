@@ -57,14 +57,18 @@ public class Player : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void RemoteJump()
     {
-        movement.HandleJump(); // Executa o pulo nos clientes remotos
+        // Executa apenas a animação, não o AddForce
+        movement.TriggerJumpAnimationOnly(); // Novo método
     }
+
 
 
     private void SmoothMovement()
     {
-        rb.position = Vector2.MoveTowards(rb.position, targetPosition, Time.deltaTime * 10f);
+        rb.MovePosition(Vector2.Lerp(rb.position, targetPosition, Time.deltaTime * 10f));
     }
+
+
 
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
