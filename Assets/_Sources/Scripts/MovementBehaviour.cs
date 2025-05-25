@@ -29,8 +29,8 @@ public class MovementBehaviour : MonoBehaviour
 
         rig.linearVelocity = new Vector2(horizontalInput * speedMovement, rig.linearVelocityY);
 
-        sprite.flipX = horizontalInput < 0;
-        anim.SetBool(RunAnim, horizontalInput != 0);
+        if(sprite != null) sprite.flipX = horizontalInput < 0;
+        if(anim != null) anim.SetBool(RunAnim, horizontalInput != 0);
     }
 
     private void Jump()
