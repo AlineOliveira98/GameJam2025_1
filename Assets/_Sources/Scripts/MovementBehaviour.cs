@@ -17,6 +17,9 @@ public class MovementBehaviour : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Animator anim;
 
+    public bool CanMove { get; set; } = true;
+    public bool CanJump { get; set; } = true;
+
     void Update()
     {
         Movement();
@@ -25,6 +28,8 @@ public class MovementBehaviour : MonoBehaviour
 
     private void Movement()
     {
+        if (!CanMove) return;
+        
         var horizontalInput = Input.GetAxis("Horizontal");
 
         rig.linearVelocity = new Vector2(horizontalInput * speedMovement, rig.linearVelocityY);
@@ -35,6 +40,8 @@ public class MovementBehaviour : MonoBehaviour
 
     private void Jump()
     {
+        if (!CanJump) return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rig.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);

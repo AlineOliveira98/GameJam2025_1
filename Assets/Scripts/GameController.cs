@@ -3,11 +3,33 @@ using Photon.Pun;
 
 public class GameController : MonoBehaviour
 {
-    public GameObject Player;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public static GameController Instance;
+    [SerializeField] private bool localMode;
+    [SerializeField] public GameObject Player;
+
+    [Header("Players Local Mode")]
+    [SerializeField] private bool isHumanPlayer;
+    [SerializeField] private PlayerController humanPlayer;
+    [SerializeField] private PlayerController dogPlayer;
+
+    public PlayerController HumanPlayer => humanPlayer;
+    public PlayerController DogPlayer => dogPlayer;
+    
+    public float DistanceBetweenPlayers { get; private set; }
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
-        SpawnPlayer();
+        if(!localMode) SpawnPlayer();
+    }
+
+    void Update()
+    {
+        DistanceBetweenPlayers = (humanPlayer.transform.position - dogPlayer.transform.position).sqrMagnitude;
     }
 
     public void SpawnPlayer()

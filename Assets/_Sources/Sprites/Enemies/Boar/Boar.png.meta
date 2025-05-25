@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f3452022f517ec244b2623844ac2c71f
+guid: b8837b9e90aaa5449818b55fb7ba0104
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -118,7 +118,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -132,7 +132,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -156,7 +156,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -182,7 +182,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -195,7 +195,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -835,7 +835,35 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      PNG_0: 5225380454210030592
+      PNG_1: 722830081084122013
+      PNG_10: 6702810773565572047
+      PNG_11: -8556168565088572413
+      PNG_12: 826082157313329362
+      PNG_13: -3021269154744487929
+      PNG_14: 5286461632771873563
+      PNG_15: -6229093818923497032
+      PNG_16: -5802869189626526743
+      PNG_17: 84950179534430419
+      PNG_18: 4379069543685372189
+      PNG_19: -7845106957553333137
+      PNG_2: 7388676810990446206
+      PNG_20: 513356827727638495
+      PNG_21: -8445135736001032911
+      PNG_22: 9005017588634037235
+      PNG_23: 4745359618879602691
+      PNG_24: 6358720585111283990
+      PNG_25: 903237067000354221
+      PNG_26: -7428714698316942459
+      PNG_27: 2019471019072179844
+      PNG_3: 8882125562309249599
+      PNG_4: -3828051449404867726
+      PNG_5: -3747187356799777701
+      PNG_6: -8149130431376653727
+      PNG_7: 2223414122687192829
+      PNG_8: -6424906630651279387
+      PNG_9: -3572981046074051202
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

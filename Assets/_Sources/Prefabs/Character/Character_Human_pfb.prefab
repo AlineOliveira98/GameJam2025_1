@@ -9,12 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4656608931501619429}
+  - component: {fileID: 2965178631675581205}
   - component: {fileID: 6497063398586029799}
+  - component: {fileID: 6832934722503307183}
   - component: {fileID: 2896390339773369626}
   - component: {fileID: 5783503045121113117}
-  - component: {fileID: 6832934722503307183}
   - component: {fileID: 5809235493789817851}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character_Human_pfb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,6 +39,19 @@ Transform:
   - {fileID: 3528917252302416528}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2965178631675581205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3425565059977551964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1f101979be50a4e881f7896b3c2c52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceToCarryDog: 3
 --- !u!114 &6497063398586029799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55,6 +69,25 @@ MonoBehaviour:
   rig: {fileID: 2896390339773369626}
   sprite: {fileID: 5094343512722070922}
   anim: {fileID: 4447961427857680050}
+--- !u!114 &6832934722503307183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3425565059977551964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d918faf88457454b9500baebf18ec02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grappleLength: 1
+  grappleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  rope: {fileID: 5077751022798329441}
+  grapplePoint: {x: 0, y: 0, z: 0}
+  isGrappling: 0
 --- !u!50 &2896390339773369626
 Rigidbody2D:
   serializedVersion: 5
@@ -128,24 +161,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.0625, y: 2.3125}
   m_EdgeRadius: 0
---- !u!114 &6832934722503307183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3425565059977551964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d918faf88457454b9500baebf18ec02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grappleLength: 1
-  grappleLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  rope: {fileID: 5077751022798329441}
-  isGrappling: 0
 --- !u!232 &5809235493789817851
 DistanceJoint2D:
   m_ObjectHideFlags: 0
@@ -177,7 +192,7 @@ GameObject:
   - component: {fileID: 1528097133438527750}
   - component: {fileID: 5094343512722070922}
   - component: {fileID: 4447961427857680050}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,6 +302,10 @@ PrefabInstance:
     - target: {fileID: 8508974406889031763, guid: 2931e1b3f7e4b5c4a91f0dc9d57a62bb, type: 3}
       propertyPath: m_Name
       value: Rope
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508974406889031763, guid: 2931e1b3f7e4b5c4a91f0dc9d57a62bb, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9046059808839533256, guid: 2931e1b3f7e4b5c4a91f0dc9d57a62bb, type: 3}
       propertyPath: m_LocalPosition.x
