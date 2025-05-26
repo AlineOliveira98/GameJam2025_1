@@ -4,7 +4,7 @@ public class PlayerDog : PlayerController
 {
     [Header("Settings")]
     [SerializeField] private float damage;
-    [SerializeField] private float distanceToCarryDog = 2.0f;
+    [SerializeField] private float distanceToGrabHuman = 2.0f;
 
     [Header("References")]
     [SerializeField] private Rigidbody2D rig;
@@ -12,7 +12,7 @@ public class PlayerDog : PlayerController
 
     private bool isGrabbed;
 
-    private bool IsCloseToHuman => GameController.Instance.DistanceBetweenPlayers < distanceToCarryDog;
+    private bool IsCloseToHuman => GameController.Instance.DistanceBetweenPlayers < distanceToGrabHuman;
     private PlayerHuman PlayerHuman => GameController.Instance.HumanPlayer as PlayerHuman;
 
     void Update()

@@ -5,7 +5,7 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
     [SerializeField] private bool localMode;
-    [SerializeField] public GameObject Player;
+    [SerializeField] private GameObject Player;
 
     [Header("Players Local Mode")]
     [SerializeField] private bool isHumanPlayer;

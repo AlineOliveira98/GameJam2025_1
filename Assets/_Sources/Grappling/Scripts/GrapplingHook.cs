@@ -7,8 +7,8 @@ public class GrapplingHook : MonoBehaviour
     [SerializeField] private LayerMask grappleLayer;
     [SerializeField] private LineRenderer rope;
 
-    public Vector3 grapplePoint;
-    public bool isGrappling;
+    private Vector3 grapplePoint;
+    private bool isGrappling;
     private DistanceJoint2D joint;
 
     void Start()

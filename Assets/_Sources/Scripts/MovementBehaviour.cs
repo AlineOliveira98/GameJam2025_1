@@ -20,7 +20,7 @@ public class MovementBehaviour : MonoBehaviour
     public bool CanMove { get; set; } = true;
     public bool CanJump { get; set; } = true;
 
-    void Update()
+    void FixedUpdate()
     {
         Movement();
         Jump();
