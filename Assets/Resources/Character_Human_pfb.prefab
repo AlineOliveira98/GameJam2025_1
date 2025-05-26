@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4493699451384149651}
   m_Layer: 0
   m_Name: Character_Human_pfb
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,6 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   spriteRenderer: {fileID: 5094343512722070922}
+  IsFacingRight: 1
 --- !u!50 &2896390339773369626
 Rigidbody2D:
   serializedVersion: 5
