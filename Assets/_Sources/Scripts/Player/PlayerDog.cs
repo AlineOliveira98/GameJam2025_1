@@ -5,10 +5,9 @@ public class PlayerDog : PlayerController
     [Header("Settings")]
     [SerializeField] private float damage;
     [SerializeField] private float distanceToGrabHuman = 2.0f;
-
-    [Header("References")]
-    [SerializeField] private Rigidbody2D rig;
-    [SerializeField] private MovementBehaviour movementBehaviour;
+    [SerializeField] private int stunHit = 3;
+    [SerializeField] private float stunDuration = 2f;
+    [SerializeField] private float stunRecoveryTime = 3f;
 
     private bool isGrabbed;
 
@@ -36,6 +35,11 @@ public class PlayerDog : PlayerController
 
     }
 
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+    }
+
     public void Grab()
     {
         transform.position = (Vector2)PlayerHuman.transform.position + Vector2.up * 1.5f;
@@ -48,7 +52,7 @@ public class PlayerDog : PlayerController
 
         movementBehaviour.CanMove = false;
         movementBehaviour.CanJump = false;
-        
+
     }
 
     public void Release()

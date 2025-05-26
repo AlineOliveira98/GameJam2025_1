@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 358290752596884947}
   - component: {fileID: 2896390339773369626}
   - component: {fileID: 8402496275190037236}
+  - component: {fileID: 4610997904056264462}
   m_Layer: 8
   m_Name: Character_Human_pfb
   m_TagString: Player
@@ -50,6 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1f101979be50a4e881f7896b3c2c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rig: {fileID: 2896390339773369626}
+  movementBehaviour: {fileID: 358290752596884947}
 --- !u!114 &3229576105122347665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,6 +151,26 @@ CapsuleCollider2D:
   m_Offset: {x: 0.20729023, y: -0.004935384}
   m_Size: {x: 1.3291601, y: 2.3557398}
   m_Direction: 0
+--- !u!232 &4610997904056264462
+DistanceJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3425565059977551964}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_BreakAction: 3
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 4.0181923
+  m_MaxDistanceOnly: 0
 --- !u!1 &5315793555561348542
 GameObject:
   m_ObjectHideFlags: 0

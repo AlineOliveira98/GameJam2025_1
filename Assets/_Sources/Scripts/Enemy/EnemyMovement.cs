@@ -18,6 +18,7 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 direction;
     private float distanceHuman => Mathf.Abs(HumanPlayer.position.x - transform.position.x);
     private float distanceDog => Mathf.Abs(DogPlayer.position.x - transform.position.x);
+    private bool followPlayer;
 
     void Start()
     {
@@ -40,10 +41,27 @@ public class EnemyMovement : MonoBehaviour
     private void Attack()
     {
         anim.SetBool(AttackAnim, true);
+
+        var targets = Physics2D.OverlapCircleAll(transform.position, 3f, LayerMask.GetMask("Player"));
+
+        foreach (var target in targets)
+        {
+            if (target.TryGetComponent<IDamageable>(out var damageable))
+            {
+                damageable.TakeDamage(1f);
+            }
+        }
+    }
+
+    public void StartFollowing()
+    {
+        followPlayer = true;
     }
 
     private void FollowMovement()
     {
+        if (!followPlayer) return;
+
         anim.SetBool(AttackAnim, false);
 
         direction = new Vector2(Mathf.Sign(HumanPlayer.position.x - transform.position.x), 0);
@@ -52,4 +70,6 @@ public class EnemyMovement : MonoBehaviour
 
         sprite.flipX = direction.x < 0;
     }
+
+    
 }
