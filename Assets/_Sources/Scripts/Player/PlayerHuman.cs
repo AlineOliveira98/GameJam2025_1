@@ -1,17 +1,7 @@
 using UnityEngine;
 
-public class PlayerHuman : MonoBehaviour
+public class PlayerHuman : PlayerController
 {
-    public void CarryDog()
-    {
-
-    }
-
-    public void DropDog()
-    {
-
-    }
-
     public void ThrowHook()
     {
         
