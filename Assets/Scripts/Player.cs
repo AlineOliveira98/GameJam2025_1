@@ -13,7 +13,16 @@ public class Player : MonoBehaviourPun, IPunObservable
 
     public bool IsFacingRight = true;
     private CameraFollowobject _cameraRig;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    // Jump
+    public float jumpForce = 5f;
+    public LayerMask groundLayer;
+    public Transform groundCheck;
+    public float groundCheckRadius = 0.2f;
+
+    private bool isGrounded;
+    private bool jumpPressed;
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
@@ -33,7 +42,6 @@ public class Player : MonoBehaviourPun, IPunObservable
         }
     }
 
-
     private IEnumerator SetupCamera(Transform followTarget)
     {
         yield return null;
@@ -46,22 +54,40 @@ public class Player : MonoBehaviourPun, IPunObservable
                 yield break;
             }
         }
-
     }
 
+    void Update()
+    {
+        if (photonView.IsMine)
+        {
+            // Captura o botão de pulo no Update (mais preciso)
+            if (Input.GetButtonDown("Jump"))
+            {
+                jumpPressed = true;
+            }
+        }
+    }
 
-
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (photonView.IsMine)
         {
-            //Minha movaimentacao
             ProcessInput();
+
+            // Verifica se está no chão
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+            // Executa o pulo se foi pressionado e está no chão
+            if (jumpPressed && isGrounded)
+            {
+                rig.linearVelocity = new Vector2(rig.linearVelocity.x, jumpForce);
+                photonView.RPC("DoJump", RpcTarget.Others);
+            }
+
+            jumpPressed = false; // reseta o flag
         }
         else
         {
-            //sincroniza outros players
             smoothMovement();
         }
     }
@@ -76,49 +102,48 @@ public class Player : MonoBehaviourPun, IPunObservable
         if (movement > 0)
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
-            this.photonView.RPC("ChangeLeft", RpcTarget.Others);
+            photonView.RPC("ChangeLeft", RpcTarget.Others);
             IsFacingRight = true;
             _cameraRig?.SetFacing(true);
         }
-        if (movement < 0)
+        else if (movement < 0)
         {
             transform.eulerAngles = new Vector3(0, 180, 0);
-            this.photonView.RPC("ChangeRight", RpcTarget.Others);
+            photonView.RPC("ChangeRight", RpcTarget.Others);
             IsFacingRight = false;
             _cameraRig?.SetFacing(false);
         }
-
     }
-
     #endregion
 
     #region RPCs Functions
     [PunRPC]
     private void ChangeLeft()
     {
-        //spriteRenderer.flipX = false;
         transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
     [PunRPC]
     private void ChangeRight()
     {
-        //spriteRenderer.flipX = true;
         transform.eulerAngles = new Vector3(0, 180, 0);
     }
 
+    [PunRPC]
+    private void DoJump()
+    {
+        rig.linearVelocity = new Vector2(rig.linearVelocity.x, jumpForce);
+    }
     #endregion
 
     #region othersClients
     private void smoothMovement()
     {
-        //transform.position = Vector3.Lerp(transform.position, clientPos, Time.fixedDeltaTime);
         rig.position = Vector2.MoveTowards(rig.position, clientPos, Time.fixedDeltaTime);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
         if (stream.IsWriting)
         {
             stream.SendNext(rig.position);
@@ -132,7 +157,6 @@ public class Player : MonoBehaviourPun, IPunObservable
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             clientPos += rig.linearVelocity * lag;
         }
-
     }
     #endregion
 }

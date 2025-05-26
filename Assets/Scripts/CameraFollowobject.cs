@@ -4,7 +4,7 @@ public class CameraFollowobject : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private float lateralOffset = 3f;
-    [SerializeField] private float verticalOffset = 0.5f;
+    [SerializeField] private float verticalOffset = -0.27f;
     [SerializeField] private float smoothTime = 0.2f;
 
     private Vector3 velocity;

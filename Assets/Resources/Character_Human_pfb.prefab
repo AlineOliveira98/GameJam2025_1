@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 4656608931501619429}
   - component: {fileID: 4931351026283447417}
   - component: {fileID: 2896390339773369626}
-  - component: {fileID: 5783503045121113117}
   - component: {fileID: 8188691681464542990}
   - component: {fileID: -8988558796706028585}
-  - component: {fileID: 4493699451384149651}
+  - component: {fileID: 7947184940568890569}
   m_Layer: 0
   m_Name: Character_Human_pfb
   m_TagString: Player
@@ -36,6 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1528097133438527750}
+  - {fileID: 7973223109746284774}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4931351026283447417
@@ -53,6 +53,12 @@ MonoBehaviour:
   speed: 5
   spriteRenderer: {fileID: 5094343512722070922}
   IsFacingRight: 1
+  jumpForce: 5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheck: {fileID: 7973223109746284774}
+  groundCheckRadius: 0.5
 --- !u!50 &2896390339773369626
 Rigidbody2D:
   serializedVersion: 5
@@ -80,52 +86,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &5783503045121113117
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3425565059977551964}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.21968788, y: 0.3230703}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.0625, y: 2.3125}
-    newSize: {x: 2.0625, y: 2.3125}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.6231242, y: 1.6663594}
-  m_EdgeRadius: 0
 --- !u!114 &8188691681464542990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,8 +125,8 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!58 &4493699451384149651
-CircleCollider2D:
+--- !u!70 &7947184940568890569
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -199,8 +159,9 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.18, y: -0.55}
-  m_Radius: 0.71
+  m_Offset: {x: 0.2056421, y: -0.044704914}
+  m_Size: {x: 1.1973944, y: 2.3769073}
+  m_Direction: 0
 --- !u!1 &5315793555561348542
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,3 +272,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &6532334612093052159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7973223109746284774}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7973223109746284774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6532334612093052159}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.22, y: -1.18, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4656608931501619429}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
