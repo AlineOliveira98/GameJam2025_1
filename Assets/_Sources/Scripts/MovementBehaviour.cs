@@ -20,17 +20,26 @@ public class MovementBehaviour : MonoBehaviour
     public bool CanMove { get; set; } = true;
     public bool CanJump { get; set; } = true;
 
+    private float horizontalInput;
+
+    void Update()
+    {
+        horizontalInput = Input.GetAxis("Horizontal");
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
+    }
+
     void FixedUpdate()
     {
         Movement();
-        Jump();
     }
 
     private void Movement()
     {
         if (!CanMove) return;
-        
-        var horizontalInput = Input.GetAxis("Horizontal");
 
         rig.linearVelocity = new Vector2(horizontalInput * speedMovement, rig.linearVelocityY);
 
@@ -41,10 +50,7 @@ public class MovementBehaviour : MonoBehaviour
     private void Jump()
     {
         if (!CanJump) return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rig.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-        }
+        
+        rig.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }
 }
