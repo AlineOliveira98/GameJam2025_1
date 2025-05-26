@@ -29,6 +29,8 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+        if (humanPlayer == null || dogPlayer == null) return;
+
         DistanceBetweenPlayers = (humanPlayer.transform.position - dogPlayer.transform.position).sqrMagnitude;
     }
 

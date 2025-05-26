@@ -1,5 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
+using Unity.Cinemachine;
+using System.Collections;
 
 public class Player : MonoBehaviourPun, IPunObservable
 {
@@ -8,12 +10,46 @@ public class Player : MonoBehaviourPun, IPunObservable
     public SpriteRenderer spriteRenderer;
 
     private Vector2 clientPos;
+
+    public bool IsFacingRight = true;
+    private CameraFollowobject _cameraRig;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rig = gameObject.GetComponent<Rigidbody2D>();
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        rig = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (photonView.IsMine)
+        {
+            GameObject camTarget = new GameObject("CameraFollowTarget");
+            camTarget.transform.position = transform.position;
+
+            var camFollow = camTarget.AddComponent<CameraFollowobject>();
+            camFollow.SetTarget(transform);
+            camFollow.SetFacing(IsFacingRight);
+            _cameraRig = camFollow;
+
+            StartCoroutine(SetupCamera(camTarget.transform));
+        }
     }
+
+
+    private IEnumerator SetupCamera(Transform followTarget)
+    {
+        yield return null;
+
+        foreach (var cam in Object.FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None))
+        {
+            if (cam.name == "PlayerCamera")
+            {
+                cam.Follow = followTarget;
+                yield break;
+            }
+        }
+
+    }
+
+
 
     // Update is called once per frame
     void FixedUpdate()
@@ -39,22 +75,19 @@ public class Player : MonoBehaviourPun, IPunObservable
 
         if (movement > 0)
         {
-            //TODO - flip
-            //spriteRenderer.flipX = false;
             transform.eulerAngles = new Vector3(0, 0, 0);
             this.photonView.RPC("ChangeLeft", RpcTarget.Others);
+            IsFacingRight = true;
+            _cameraRig?.SetFacing(true);
         }
         if (movement < 0)
         {
-            //TODO - flip
-            //spriteRenderer.flipX = true;
             transform.eulerAngles = new Vector3(0, 180, 0);
             this.photonView.RPC("ChangeRight", RpcTarget.Others);
+            IsFacingRight = false;
+            _cameraRig?.SetFacing(false);
         }
-        if (movement == 0)
-        {
 
-        }
     }
 
     #endregion
@@ -100,15 +133,6 @@ public class Player : MonoBehaviourPun, IPunObservable
             clientPos += rig.linearVelocity * lag;
         }
 
-
-        //if (stream.IsWriting)
-        //{
-        //    stream.SendNext(transform.position);
-        //}
-        //else if (stream.IsReading)
-        //{
-        //    clientPos = (Vector2)stream.ReceiveNext();
-        //}
     }
     #endregion
 }
